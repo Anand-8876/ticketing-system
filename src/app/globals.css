@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-tech-mono);
+  --font-display: var(--font-orbitron);
+}
+
+/* Blue-and-white cyberpunk palette. */
+@theme {
+  --color-ink: #030712; /* page background */
+  --color-panel: #071326; /* cards, header */
+  --color-panel-2: #0b1d38; /* columns, inset areas */
+  --color-line: rgb(61 169 255 / 0.22); /* hairline borders */
+  --color-neon: #3da9ff; /* primary accent */
+  --color-neon-hi: #8fd3ff; /* hover / bright accent */
+  --color-ice: #eaf6ff; /* primary text */
+  --color-mute: #7f9cc4; /* secondary text */
+}
+
+body {
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgb(61 169 255 / 0.18), transparent 70%),
+    linear-gradient(rgb(61 169 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(61 169 255 / 0.06) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  background-attachment: fixed;
+  color: var(--color-ice);
+  color-scheme: dark;
+}
+
+/* Faint CRT scanlines over everything. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.025) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+::selection {
+  background: rgb(61 169 255 / 0.4);
+  color: white;
+}
+
+@layer components {
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost,
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] transition disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  }
+  .btn-primary {
+    @apply bg-neon text-ink hover:bg-neon-hi;
+    box-shadow: 0 0 18px rgb(61 169 255 / 0.45);
+  }
+  .btn-secondary {
+    @apply border border-neon/60 bg-neon/10 text-neon-hi hover:bg-neon/20 hover:text-white;
+  }
+  .btn-ghost {
+    @apply rounded-sm text-mute hover:bg-neon/10 hover:text-ice;
+  }
+  .btn-danger {
+    @apply border border-rose-500/60 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 hover:text-white;
+  }
+  .input {
+    @apply w-full rounded-sm border border-line bg-ink/70 px-2.5 py-1.5 text-sm text-ice outline-none transition placeholder:text-mute/60 focus:border-neon focus:ring-1 focus:ring-neon/60;
+  }
+  .input:focus {
+    box-shadow: 0 0 12px rgb(61 169 255 / 0.35);
+  }
+  .label {
+    @apply mb-1 block font-mono text-[11px] uppercase tracking-[0.18em] text-neon/80;
+  }
+  .card {
+    @apply relative border border-line bg-panel/85 backdrop-blur-sm;
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    box-shadow: inset 0 0 0 1px rgb(61 169 255 / 0.04), 0 0 24px rgb(61 169 255 / 0.06);
+  }
+  /* Neon strokes across the two cut corners. */
+  .card::before,
+  .card::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom right,
+      transparent calc(50% - 1px),
+      rgb(61 169 255 / 0.9) calc(50% - 1px) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+  }
+  .card::before {
+    top: 0;
+    left: 0;
+  }
+  .card::after {
+    right: 0;
+    bottom: 0;
+  }
+  .neon-text {
+    color: white;
+    text-shadow: 0 0 6px rgb(61 169 255 / 0.9), 0 0 18px rgb(61 169 255 / 0.5);
+  }
+  .heading {
+    @apply font-display uppercase tracking-[0.08em];
+  }
+}
+
+dialog {
+  background: var(--color-panel);
+  color: var(--color-ice);
+  border: 1px solid rgb(61 169 255 / 0.5);
+  box-shadow: 0 0 40px rgb(61 169 255 / 0.3);
+}
+
+dialog::backdrop {
+  background: rgb(3 7 18 / 0.75);
+  backdrop-filter: blur(3px);
+}
+
+select option {
+  background: var(--color-panel);
+  color: var(--color-ice);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(61 169 255 / 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(61 169 255 / 0.55);
+}
